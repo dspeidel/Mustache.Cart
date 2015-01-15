@@ -17,7 +17,6 @@ namespace Mustache.CartService.WebApi.Hypermedia
 			get { return LinkRelations.CartResource; }
 		}
 
-
 		// IResourceStateSpec is not required but can be overridden to define custom operations and links.
 		// See example below...
 		
@@ -25,24 +24,7 @@ namespace Mustache.CartService.WebApi.Hypermedia
 		//{
 		//	get
 		//	{
-		//		return
-		//			new SingleStateSpec<SampleResource, string>
-		//			{
-		//				Links =
-		//				{
-		//					CreateLinkTemplate(LinkRelations.SampleResource2, OrganizationSpec2.Uri, r => r.Id),
-		//				},
-
-		//				Operations = new StateSpecOperationsSource<SampleResource, string>
-		//				{
-		//					Get = ServiceOperations.Get,
-		//					InitialPost = ServiceOperations.Create,
-		//					Post = ServiceOperations.Update,
-		//					Delete = ServiceOperations.Delete,
-		//				},
-		//			};
-		//	}
-		//}
+		//		
 
 
 		protected override System.Collections.Generic.IEnumerable<IResourceStateSpec<Cart, CartState, Guid>> GetStateSpecs()
@@ -51,23 +33,36 @@ namespace Mustache.CartService.WebApi.Hypermedia
 				{
 					Links =
 						{
-							CreateLinkTemplate(LinkRelations.Items, ItemSpec.UriByCart.Many, c => c.id),
+							CreateLinkTemplate(LinkRelations.AddItemsResource, ItemSpec.UriByCart.Many, c => c.Id),
 						}
 				};
 
 			yield return new ResourceStateSpec<Cart, CartState, Guid>(CartState.InProgress)
 				{
-					
+					Links =
+						{
+							CreateLinkTemplate(LinkRelations.ItemsResource, ItemSpec.UriByCart.Many, c => c.Id),
+							CreateLinkTemplate(LinkRelations.AddItemsResource, ItemSpec.UriByCart.Many, c => c.Id),
+							CreateLinkTemplate(LinkRelations.StartPaymentResource, PaymentSpec.UriByCart, c => c.Id)
+						}
 				};
 
 			yield return new ResourceStateSpec<Cart, CartState, Guid>(CartState.Paying)
 				{
-					g
+					Links =
+						{
+							CreateLinkTemplate(LinkRelations.ItemsResource, ItemSpec.UriByCart.Many, c => c.Id),
+							CreateLinkTemplate(LinkRelations.CompletePaymentResource, PaymentSpec.UriByCart, c => c.Id)
+						}
 				};
 
 			yield return new ResourceStateSpec<Cart, CartState, Guid>(CartState.Complete)
 				{
-					
+					Links =
+						{
+							CreateLinkTemplate(LinkRelations.ItemsResource, ItemSpec.UriByCart.Many, c => c.Id),
+							CreateLinkTemplate(LinkRelations.PaymentResource, PaymentSpec.UriByCart, c => c.Id)
+						}
 				};
 
 			throw new NotImplementedException();

@@ -7,24 +7,24 @@ using IQ.Platform.Framework.WebApi.Hypermedia.Specs;
 
 namespace Mustache.CartService.WebApi.Hypermedia
 {
-	public class ItemSpec : SingleStateResourceSpec<CartItem, Guid>
+	public class PaymentSpec : SingleStateResourceSpec<Payment, Guid>
 	{
 
-		public static ResourceUriTemplate UriByCart = ResourceUriTemplate.Create("Carts({cartId})/Items({id})");
+		public static ResourceUriTemplate UriByCart = ResourceUriTemplate.Create("Carts({cartId})/Payment({id})");
 		
-		public override IResourceStateSpec<CartItem, NullState, Guid> StateSpec
+		public override IResourceStateSpec<Payment, NullState, Guid> StateSpec
 		{
 		    get
 		    {
 		        return
-		            new SingleStateSpec<CartItem, Guid>
+		            new SingleStateSpec<Payment, Guid>
 		            {
 		                Links =
 		                {
 							CreateLinkTemplate(LinkRelations.CartResource, CartSpec.Uri, c => c.Id),
 		                },
 
-		                Operations = new StateSpecOperationsSource<CartItem, Guid>
+		                Operations = new StateSpecOperationsSource<Payment, Guid>
 		                {
 		                    Get = ServiceOperations.Get,
 		                    InitialPost = ServiceOperations.Create,
