@@ -30,7 +30,7 @@ namespace Mustache.CartService.WebApi.Hypermedia
 					{
 						CartState.InProgress, new[]
 							{
-								CartState.New,
+								//CartState.New,
 								CartState.Paying,
 							}
 					},

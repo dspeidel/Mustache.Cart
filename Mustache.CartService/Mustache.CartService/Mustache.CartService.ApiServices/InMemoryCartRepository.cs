@@ -62,8 +62,7 @@ namespace Mustache.CartService.ApiServices
 		public Model.PersistenceModel.Cart CreateCart(Model.PersistenceModel.Cart cart)
 		{
 			//Validations and such
-			cart.Id = Guid.NewGuid();
-			_carts[cart.Id] = cart;
+			_carts.Add(cart.Id,cart);
 			return cart;
 		}
 
