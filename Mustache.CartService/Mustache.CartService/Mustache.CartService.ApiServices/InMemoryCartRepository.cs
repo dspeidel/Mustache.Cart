@@ -18,15 +18,16 @@ namespace Mustache.CartService.ApiServices
 
 		private void AddDefaultCart()
 		{
+			var cartId = Guid.NewGuid();
 			var cart = new Model.PersistenceModel.Cart
 				{
-					Id = Guid.NewGuid(),
+					Id = cartId,
 					Address = new Model.PersistenceModel.Address { Name = "Homer Simpson", City = "Springfield", PostalCode = "A8A8A8" },
 					Items =
 						new List<Model.PersistenceModel.CartItem>
 							{
-								new Model.PersistenceModel.CartItem {ProductId = 1, Description = "some product", Quantity = 2, Price = 2.99m},
-								new Model.PersistenceModel.CartItem {ProductId = 2, Description = "some product2", Quantity = 3, Price = 19.99m}
+								new Model.PersistenceModel.CartItem {Id = Guid.NewGuid(), CartId = cartId, ProductId = 1, Description = "some product", Quantity = 2, Price = 2.99m},
+								new Model.PersistenceModel.CartItem {Id = Guid.NewGuid(), CartId = cartId, ProductId = 2, Description = "some product2", Quantity = 3, Price = 19.99m}
 							},
 					LastModified = DateTimeOffset.UtcNow,
 					

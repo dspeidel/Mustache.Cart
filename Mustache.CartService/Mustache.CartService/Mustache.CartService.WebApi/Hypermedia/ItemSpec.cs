@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using CartService;
 using IQ.Platform.Framework.WebApi.Model.Hypermedia;
 using Mustache.CartService.Model;
@@ -11,9 +13,12 @@ namespace Mustache.CartService.WebApi.Hypermedia
 	{
 
 		public static ResourceUriTemplate UriByCart = ResourceUriTemplate.Create("Carts({cartId})/Items");
-		public static ResourceUriTemplate Uri = ResourceUriTemplate.Create("Carts({cartId})/Items({id})");
-		
-		
+		public static ResourceUriTemplate Uri = ResourceUriTemplate.Create("Items({id})");
+
+		protected override IEnumerable<ResourceLinkTemplate<CartItem>> Links()
+		{
+			yield return CreateLinkTemplate(CommonLinkRelations.Self, Uri, c => c.Id);
+		}
 
 		public override IResourceStateSpec<CartItem, NullState, Guid> StateSpec
 		{

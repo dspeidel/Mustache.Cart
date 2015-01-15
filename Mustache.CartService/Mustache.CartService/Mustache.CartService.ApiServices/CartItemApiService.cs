@@ -34,6 +34,7 @@ namespace Mustache.CartService.ApiServices
 
 			_cartRepository.AddItem(cartId, item);
 			resource.Id = item.Id;
+			resource.CartId = cartId;
 
 			return new ResourceCreationResult<CartItem, Guid>(resource);
 		}
@@ -42,7 +43,7 @@ namespace Mustache.CartService.ApiServices
 		{
 			Guid cartId = context.UriParameters.GetByName<Guid>("cartId").Value;
 			return _cartRepository.GetItemsByCartId(cartId)
-			               .Select(i => new CartItem {CartId = cartId, ProductId = i.ProductId, Quantity = i.Quantity});
+			               .Select(i => new CartItem {CartId = cartId, ProductId = i.ProductId, Quantity = i.Quantity, Id = i.Id});
 
 		}
 
@@ -50,7 +51,7 @@ namespace Mustache.CartService.ApiServices
 		{
 			Guid cartId = context.UriParameters.GetByName<Guid>("cartId").Value;
 			var item = _cartRepository.GetItemsByCartId(cartId).FirstOrDefault(i => i.Id == id);
-			return new CartItem {CartId = cartId, ProductId = item.ProductId, Quantity = item.Quantity };
+			return new CartItem {CartId = cartId, ProductId = item.ProductId, Quantity = item.Quantity, Id = item.Id};
 		}
 
 		public CartItem Update(CartItem resource, IRequestContext context)
