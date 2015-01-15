@@ -10,7 +10,7 @@ namespace Mustache.CartService.WebApi.Hypermedia
 	public class PaymentSpec : SingleStateResourceSpec<Payment, Guid>
 	{
 
-		public static ResourceUriTemplate UriByCart = ResourceUriTemplate.Create("Carts({cartId})/Payment({id})");
+		public static ResourceUriTemplate UriByCart = ResourceUriTemplate.Create("Carts({cartId})/Payment");
 		
 		public override IResourceStateSpec<Payment, NullState, Guid> StateSpec
 		{

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CartService
+namespace Mustache.CartService.Model.PersistenceModel
 {
 	public class Address	
 	{

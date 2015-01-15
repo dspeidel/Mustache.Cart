@@ -6,14 +6,17 @@ namespace Mustache.CartService.ApiServices
 {
 	public interface ICartRepository
 	{
-		Cart GetCartById(Guid id);
-		Cart CreateCart(Cart cart);
-		CartItem AddItem(Guid cartId, CartItem item);
-		CartItem UpdateItem(Guid cartId, CartItem item);
-	    CartItem DeleteItem(Guid cartId, int itemId);
+		Model.PersistenceModel.Cart GetCartById(Guid id);
+		Model.PersistenceModel.Cart CreateCart(Model.PersistenceModel.Cart cart);
+		Model.PersistenceModel.CartItem AddItem(Guid cartId, Model.PersistenceModel.CartItem item);
+		Model.PersistenceModel.CartItem UpdateItem(Guid cartId, Model.PersistenceModel.CartItem item);
+		Model.PersistenceModel.CartItem DeleteItem(Guid cartId, int itemId);
 
-		IEnumerable<Cart> GetCarts();
+		IEnumerable<Model.PersistenceModel.Cart> GetCarts();
 
 		void ResetCartsList();
+		void DeleteCart(Guid cartId);
+
+		IEnumerable<Model.PersistenceModel.CartItem> GetItemsByCartId(Guid cartId);
 	}
 }

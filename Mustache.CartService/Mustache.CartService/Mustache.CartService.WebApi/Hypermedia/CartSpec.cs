@@ -17,16 +17,6 @@ namespace Mustache.CartService.WebApi.Hypermedia
 			get { return LinkRelations.CartResource; }
 		}
 
-		// IResourceStateSpec is not required but can be overridden to define custom operations and links.
-		// See example below...
-		
-		//public override IResourceStateSpec<SampleResource, NullState, string> StateSpec
-		//{
-		//	get
-		//	{
-		//		
-
-
 		protected override System.Collections.Generic.IEnumerable<IResourceStateSpec<Cart, CartState, Guid>> GetStateSpecs()
 		{
 			yield return new ResourceStateSpec<Cart, CartState, Guid>(CartState.New)
@@ -34,6 +24,13 @@ namespace Mustache.CartService.WebApi.Hypermedia
 					Links =
 						{
 							CreateLinkTemplate(LinkRelations.AddItemsResource, ItemSpec.UriByCart.Many, c => c.Id),
+						},
+
+					Operations = new StateSpecOperationsSource<Cart, Guid>()
+						{
+							Get = ServiceOperations.Get,
+							InitialPost = ServiceOperations.Create,
+							Delete = ServiceOperations.Delete,
 						}
 				};
 
@@ -44,7 +41,13 @@ namespace Mustache.CartService.WebApi.Hypermedia
 							CreateLinkTemplate(LinkRelations.ItemsResource, ItemSpec.UriByCart.Many, c => c.Id),
 							CreateLinkTemplate(LinkRelations.AddItemsResource, ItemSpec.UriByCart.Many, c => c.Id),
 							CreateLinkTemplate(LinkRelations.StartPaymentResource, PaymentSpec.UriByCart, c => c.Id)
-						}
+						},
+
+					Operations = new StateSpecOperationsSource<Cart, Guid>()
+					{
+						Get = ServiceOperations.Get,
+						Delete = ServiceOperations.Delete,
+					}
 				};
 
 			yield return new ResourceStateSpec<Cart, CartState, Guid>(CartState.Paying)
@@ -53,7 +56,12 @@ namespace Mustache.CartService.WebApi.Hypermedia
 						{
 							CreateLinkTemplate(LinkRelations.ItemsResource, ItemSpec.UriByCart.Many, c => c.Id),
 							CreateLinkTemplate(LinkRelations.CompletePaymentResource, PaymentSpec.UriByCart, c => c.Id)
-						}
+						},
+
+					Operations = new StateSpecOperationsSource<Cart, Guid>()
+					{
+						Get = ServiceOperations.Get
+					}
 				};
 
 			yield return new ResourceStateSpec<Cart, CartState, Guid>(CartState.Complete)
@@ -62,10 +70,13 @@ namespace Mustache.CartService.WebApi.Hypermedia
 						{
 							CreateLinkTemplate(LinkRelations.ItemsResource, ItemSpec.UriByCart.Many, c => c.Id),
 							CreateLinkTemplate(LinkRelations.PaymentResource, PaymentSpec.UriByCart, c => c.Id)
-						}
-				};
+						},
 
-			throw new NotImplementedException();
+					Operations = new StateSpecOperationsSource<Cart, Guid>()
+					{
+						Get = ServiceOperations.Get
+					}
+				};
 		}
 	}
 }

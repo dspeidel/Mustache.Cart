@@ -65,6 +65,10 @@
     <Compile Include="CartState.cs" />
     <Compile Include="Payment.cs" />
     <Compile Include="LinkRelations.cs" />
+    <Compile Include="PersistenceModel\Address.cs" />
+    <Compile Include="PersistenceModel\Cart.cs" />
+    <Compile Include="PersistenceModel\CartItem.cs" />
+    <Compile Include="PersistenceModel\Payment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SampleResource.cs" />
   </ItemGroup>

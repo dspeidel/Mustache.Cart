@@ -22,17 +22,34 @@ namespace Mustache.CartService.ApiServices
 
 		public ResourceCreationResult<Cart, Guid> Create(Cart resource, IRequestContext context)
 		{
-			throw new NotImplementedException();
+			resource.Id = Guid.NewGuid();
+			var cart = new Model.PersistenceModel.Cart { Id = resource.Id, LastModified = resource.LastModified };
+			_cartRepository.CreateCart(cart);
+
+			return new ResourceCreationResult<Cart, Guid>(resource);
 		}
 
 		public IEnumerable<Cart> GetMany(IRequestContext context)
 		{
-			throw new NotImplementedException();
+			return _cartRepository.GetCarts().Select(c => new Cart{Id = c.Id, LastModified = c.LastModified, State = GetState(c)});
 		}
 
 		public Cart Get(Guid id, IRequestContext context)
 		{
-			throw new NotImplementedException();
+			var fromDb = _cartRepository.GetCartById(id);
+			return new Cart {Id = fromDb.Id, LastModified = fromDb.LastModified, State = GetState(fromDb)};
+		}
+
+		private CartState GetState(Model.PersistenceModel.Cart fromDb)
+		{
+			if(fromDb.Items.Any() && fromDb.Payment.Id != Guid.Empty)
+				return CartState.Paying;
+			if(fromDb.Items.Any() && fromDb.Payment.Id == Guid.Empty)
+				return CartState.InProgress;
+			if(!string.IsNullOrEmpty(fromDb.Payment.AuthCode))
+				return CartState.Complete;
+
+			return CartState.New;
 		}
 
 		public Cart Update(Cart resource, IRequestContext context)
@@ -42,7 +59,7 @@ namespace Mustache.CartService.ApiServices
 
 		public void Delete(Guid id, IRequestContext context)
 		{
-			throw new NotImplementedException();
+			_cartRepository.DeleteCart(id);
 		}
 	}
 }

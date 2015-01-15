@@ -10,8 +10,11 @@ namespace Mustache.CartService.WebApi.Hypermedia
 	public class ItemSpec : SingleStateResourceSpec<CartItem, Guid>
 	{
 
-		public static ResourceUriTemplate UriByCart = ResourceUriTemplate.Create("Carts({cartId})/Items({id})");
+		public static ResourceUriTemplate UriByCart = ResourceUriTemplate.Create("Carts({cartId})/Items");
+		public static ResourceUriTemplate Uri = ResourceUriTemplate.Create("Carts({cartId})/Items({id})");
 		
+		
+
 		public override IResourceStateSpec<CartItem, NullState, Guid> StateSpec
 		{
 		    get
@@ -21,7 +24,7 @@ namespace Mustache.CartService.WebApi.Hypermedia
 		            {
 		                Links =
 		                {
-							CreateLinkTemplate(LinkRelations.CartResource, CartSpec.Uri, c => c.Id),
+							CreateLinkTemplate(LinkRelations.CartResource, CartSpec.Uri, c => c.CartId),
 		                },
 
 		                Operations = new StateSpecOperationsSource<CartItem, Guid>

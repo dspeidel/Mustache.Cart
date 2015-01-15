@@ -39,24 +39,7 @@ namespace Mustache.CartService.WebApi.Infrastructure.Installers
 
 		public void Install(IWindsorContainer container, IConfigurationStore store)
 		{
-			if (_customDomainServiceResolver != null)
-				RegisterUsingTheResolver(container);
-
-			else
 				RegisterUsingContainer(container);
-		}
-
-		void RegisterUsingTheResolver(IWindsorContainer container)
-		{
-
-			// register each domain service to be resolved using provided resolver
-			DomainServiceInterfaces
-				.Apply(domainService => container
-											.Register(Component.For(domainService)
-															   .UsingFactoryMethod(
-																   (kelner, context) =>
-																   _customDomainServiceResolver.Resolve(context.RequestedType)))
-				);
 		}
 
 		void RegisterUsingContainer(IWindsorContainer container)
@@ -71,6 +54,8 @@ namespace Mustache.CartService.WebApi.Infrastructure.Installers
 											cr.Interceptors(InterceptorReference.ForKey(LoggingConstants.DomainServiceLogger)).Anywhere;
 									})
 				.WithServiceFromInterface());
+			container.Register(
+				Component.For<ICartRepository>().UsingFactoryMethod(() => new InMemoryCartRepository()).LifestyleSingleton());
 
 		}
 

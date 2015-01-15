@@ -1,10 +1,8 @@
 ﻿using System;
-using IQ.Platform.Framework.Common;
-using IQ.Platform.Framework.WebApi.Model.Hypermedia;
 
-namespace CartService
+namespace Mustache.CartService.Model.PersistenceModel
 {
-	public class CartItem : IStatelessResource, IIdentifiable<Guid>
+	public class CartItem 
 	{
 		public Guid Id { get; set; }
 		public int ProductId { get; set; }

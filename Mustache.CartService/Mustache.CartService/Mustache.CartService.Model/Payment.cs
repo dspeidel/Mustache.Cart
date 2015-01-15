@@ -8,5 +8,6 @@ namespace Mustache.CartService.Model
 	{
 		public Guid Id { get; set; }
 		public string AuthCode { get; set; }
+		public Guid CartId { get; set; }
 	}
 }

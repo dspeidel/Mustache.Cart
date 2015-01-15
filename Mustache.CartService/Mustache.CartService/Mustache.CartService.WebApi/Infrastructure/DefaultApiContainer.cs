@@ -41,7 +41,7 @@ namespace Mustache.CartService.WebApi.Infrastructure
 
 		public override Assembly ResourceAssembly { get { return typeof(LinkRelations).Assembly; } }
 		protected override Assembly ResourceSpecsAssembly { get { return typeof(CartSpec).Assembly; } }
-		protected override Assembly ResourceStateProvidersAssembly { get { return typeof(Cart).Assembly; } }
+		protected override Assembly ResourceStateProvidersAssembly { get { return typeof(CartSpec).Assembly; } }
 		protected override Assembly ApiAppServicesAssembly { get { return typeof(CartApiService).Assembly; } }
 
 

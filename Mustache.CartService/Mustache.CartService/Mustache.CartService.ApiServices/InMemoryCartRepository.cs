@@ -2,33 +2,34 @@
 using System.Collections.Generic;
 using System.Linq;
 using CartService;
+using CartItem = Mustache.CartService.Model.PersistenceModel.CartItem;
 
 namespace Mustache.CartService.ApiServices
 {
 	public class InMemoryCartRepository : ICartRepository
 	{
-		readonly IDictionary<Guid, Cart> _carts; 
+		readonly IDictionary<Guid, Model.PersistenceModel.Cart> _carts; 
 
 		public InMemoryCartRepository()
 		{
-			_carts = new Dictionary<Guid, Cart>();
+			_carts = new Dictionary<Guid, Model.PersistenceModel.Cart>();
 			AddDefaultCart();
 		}
 
 		private void AddDefaultCart()
 		{
-			var cart = new Cart
+			var cart = new Model.PersistenceModel.Cart
 				{
 					Id = Guid.NewGuid(),
-					Address = new Address {Name = "Homer Simpson", City = "Springfield", PostalCode = "A8A8A8"},
+					Address = new Model.PersistenceModel.Address { Name = "Homer Simpson", City = "Springfield", PostalCode = "A8A8A8" },
 					Items =
-						new List<CartItem>
+						new List<Model.PersistenceModel.CartItem>
 							{
-								new CartItem {ProductId = 1, Description = "some product", Quantity = 2, Price = 2.99m},
-								new CartItem {ProductId = 2, Description = "some product2", Quantity = 3, Price = 19.99m}
+								new Model.PersistenceModel.CartItem {ProductId = 1, Description = "some product", Quantity = 2, Price = 2.99m},
+								new Model.PersistenceModel.CartItem {ProductId = 2, Description = "some product2", Quantity = 3, Price = 19.99m}
 							},
 					LastModified = DateTimeOffset.UtcNow,
-					State = CartState.InProgress
+					
 				};
 			_carts[cart.Id] = cart;
 		}
@@ -39,14 +40,25 @@ namespace Mustache.CartService.ApiServices
 			AddDefaultCart();
 		}
 
-		public Cart GetCartById(Guid id)
+		public void DeleteCart(Guid cartId)
 		{
-			Cart c = null;
+			_carts.Remove(cartId);
+		}
+
+		public IEnumerable<CartItem> GetItemsByCartId(Guid cartId)
+		{
+			var cart = GetCartById(cartId);
+			return cart.Items;
+		}
+
+		public Model.PersistenceModel.Cart GetCartById(Guid id)
+		{
+			Model.PersistenceModel.Cart c = null;
 			_carts.TryGetValue(id, out c);
 			return c;
 		}
 
-		public Cart CreateCart(Cart cart)
+		public Model.PersistenceModel.Cart CreateCart(Model.PersistenceModel.Cart cart)
 		{
 			//Validations and such
 			cart.Id = Guid.NewGuid();
@@ -54,7 +66,7 @@ namespace Mustache.CartService.ApiServices
 			return cart;
 		}
 
-		public CartItem AddItem(Guid cartId, CartItem item)
+		public Model.PersistenceModel.CartItem AddItem(Guid cartId, Model.PersistenceModel.CartItem item)
 		{
 			var cart = _carts[cartId];
 			var items = cart.Items.ToList();
@@ -64,20 +76,20 @@ namespace Mustache.CartService.ApiServices
 			return item;
 		}
 
-		public CartItem UpdateItem(Guid cartId, CartItem item)
+		public Model.PersistenceModel.CartItem UpdateItem(Guid cartId, Model.PersistenceModel.CartItem item)
 		{
 			var cart = _carts[cartId];
 			cart.Items.First(i => i.ProductId == item.ProductId).Quantity = item.Quantity;
 			return item;
 		}
 
-		public IEnumerable<Cart> GetCarts()
+		public IEnumerable<Model.PersistenceModel.Cart> GetCarts()
 		{
 			return _carts.Values;
 		}
 
 
-        public CartItem DeleteItem(Guid cartId, int itemId)
+		public Model.PersistenceModel.CartItem DeleteItem(Guid cartId, int itemId)
         {
 	        var cart = _carts[cartId];
             var item = cart.Items.First(i => i.ProductId == itemId);
