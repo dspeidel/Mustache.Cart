@@ -10,5 +10,15 @@
 		/// </summary>
 		public const string SampleResource = "iq:SampleResource";
 
+		/// <summary>
+		/// link relation to describe the Identity resource.
+		/// </summary>
+		public const string CartResource = "iq:Carts";
+
+		/// <summary>
+		/// link relation to describe the Identity resource.
+		/// </summary>
+		public const string ItemsResource = "iq:Items";
+
 	}
 }

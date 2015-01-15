@@ -272,6 +272,8 @@
     </Compile>
     <Compile Include="Handlers\NullUserContext.cs" />
     <Compile Include="Handlers\PutYourApiSafeNameUserContextProvidingHandler.cs" />
+    <Compile Include="Hypermedia\CartSpec.cs" />
+    <Compile Include="Hypermedia\ItemSpec.cs" />
     <Compile Include="Hypermedia\SampleSpec.cs" />
     <Compile Include="Infrastructure\BootStrapper.cs" />
     <Compile Include="Infrastructure\DefaultApiContainer.cs" />
